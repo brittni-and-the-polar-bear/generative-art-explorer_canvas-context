@@ -17,14 +17,14 @@
 
 import P5Lib from 'p5';
 
-import { Color, SketchContext } from '@batpb/genart';
+import {ASPECT_RATIOS, CanvasContext, Color, SketchContext} from '@batpb/genart';
 
 import '../assets/styles/sketch.css';
 
 function sketch(p5: P5Lib): void {
     p5.setup = (): void => {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight, p5.WEBGL);
         SketchContext.initialize(p5);
+        CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, true, p5.WEBGL);
     };
 
     p5.draw = (): void => {
@@ -40,8 +40,24 @@ function sketch(p5: P5Lib): void {
         p5.rect(0, 0, 75, 75);
     };
 
+    p5.keyPressed = (): void => {
+        if (p5.key === '1') {
+            CanvasContext.updateAspectRatio(ASPECT_RATIOS.SQUARE);
+        } else if (p5.key === '2') {
+            CanvasContext.updateAspectRatio(ASPECT_RATIOS.TIKTOK_PHOTO);
+        } else if (p5.key === '3') {
+            CanvasContext.updateAspectRatio(ASPECT_RATIOS.SOCIAL_VIDEO);
+        } else if (p5.key === '0') {
+            CanvasContext.updateResolution(720);
+        } else if (p5.key === '9') {
+            CanvasContext.updateResolution(1080);
+        } else if (p5.key === '8') {
+            CanvasContext.updateResolution(2048);
+        }
+    };
+
     p5.windowResized = (): void => {
-        p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+        CanvasContext.resizeCanvas();
     };
 }
 
