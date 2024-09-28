@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/brittni-and-the-polar-bear/generative-art-explorer_canvas-context#readme",
   "dependencies": {
-    "@batpb/genart": "^1.1.0",
+    "@batpb/genart": "file://~/Desktop/npm-test/batpb-genart-1.1.0-development-test-002.tgz",
     "@types/p5": "^1.7.6",
     "p5": "^1.11.0"
   },
