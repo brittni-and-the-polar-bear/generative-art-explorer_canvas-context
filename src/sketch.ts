@@ -17,14 +17,22 @@
 
 import P5Lib from 'p5';
 
-import { ASPECT_RATIOS, CanvasContext, Color, PC_7A00F5, SketchContext } from '@batpb/genart';
+import {
+    ASPECT_RATIOS,
+    AspectRatioHandler,
+    CanvasContext,
+    Color,
+    CoordinateMapper,
+    PC_7A00F5,
+    SketchContext
+} from '@batpb/genart';
 
 import '../assets/styles/sketch.css';
 
 function sketch(p5: P5Lib): void {
     p5.setup = (): void => {
         SketchContext.initialize(p5);
-        CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720);
+        CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
     };
 
     p5.draw = (): void => {
@@ -33,25 +41,26 @@ function sketch(p5: P5Lib): void {
 
         const colorA: Color = new Color(p5.color(255, 0, 255));
         p5.fill(colorA.color);
-        p5.rect(CanvasContext.mapXPercentage(0.5), 0, 250, 250);
+        p5.noStroke();
+        p5.rect(CoordinateMapper.centerX, CoordinateMapper.centerY, 250, 250);
 
         const colorB: Color = new Color(p5.color(0, 0, 255));
         p5.fill(colorB.color);
-        p5.rect(CanvasContext.mapXPercentage(0.5), 0, 75, 75);
+        p5.rect(CoordinateMapper.centerX, CoordinateMapper.centerY, 75, 75);
 
         p5.stroke((new Color(PC_7A00F5)).color);
         p5.strokeWeight(CanvasContext.defaultStroke);
         p5.line(
-            CanvasContext.mapXPercentage(0.1),
-            CanvasContext.minHeight,
-            CanvasContext.mapXPercentage(0.1),
-            CanvasContext.maxHeight)
-        ;
+            CoordinateMapper.mapRatioToCanvasX(0.1),
+            CoordinateMapper.minY,
+            CoordinateMapper.mapRatioToCanvasX(0.1),
+            CoordinateMapper.maxY
+        );
         p5.line(
-            CanvasContext.mapXPercentage(0.9),
-            CanvasContext.minHeight,
-            CanvasContext.mapXPercentage(0.9),
-            CanvasContext.maxHeight
+            CoordinateMapper.mapRatioToCanvasX(0.9),
+            CoordinateMapper.minY,
+            CoordinateMapper.mapRatioToCanvasX(0.9),
+            CoordinateMapper.maxY
         );
     };
 
@@ -62,6 +71,10 @@ function sketch(p5: P5Lib): void {
             CanvasContext.updateAspectRatio(ASPECT_RATIOS.TIKTOK_PHOTO);
         } else if (p5.key === '3') {
             CanvasContext.updateAspectRatio(ASPECT_RATIOS.SOCIAL_VIDEO);
+        } else if (p5.key === '4') {
+            CanvasContext.updateAspectRatio(
+                AspectRatioHandler.buildAspectRatio(7, 5) ?? ASPECT_RATIOS.SQUARE
+            );
         } else if (p5.key === '0') {
             CanvasContext.updateResolution(720);
         } else if (p5.key === '9') {
@@ -69,6 +82,10 @@ function sketch(p5: P5Lib): void {
         } else if (p5.key === '8') {
             CanvasContext.updateResolution(2048);
         }
+    };
+
+    p5.mousePressed = (): void => {
+        console.log(`mouseX = ${p5.mouseX}; mouseY = ${p5.mouseY}`);
     };
 
     p5.windowResized = (): void => {
