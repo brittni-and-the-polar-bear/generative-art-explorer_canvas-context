@@ -20,7 +20,7 @@ import P5Lib from 'p5';
 import {
     ASPECT_RATIOS,
     AspectRatioHandler,
-    CanvasContext,
+    CanvasContext, Circle,
     Color,
     CoordinateMapper,
     PC_7A00F5,
@@ -30,9 +30,14 @@ import {
 import '../assets/styles/sketch.css';
 
 function sketch(p5: P5Lib): void {
+    let circle: Circle;
+
     p5.setup = (): void => {
         SketchContext.initialize(p5);
         CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
+        Circle.minDiameter = 50;
+        Circle.maxDiameter = 250;
+        circle = new Circle();
     };
 
     p5.draw = (): void => {
@@ -62,6 +67,8 @@ function sketch(p5: P5Lib): void {
             CoordinateMapper.mapRatioToCanvasX(0.9),
             CoordinateMapper.maxY
         );
+
+        circle.draw();
     };
 
     p5.keyPressed = (): void => {
