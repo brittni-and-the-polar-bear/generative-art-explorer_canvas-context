@@ -34,7 +34,7 @@ function sketch(p5: P5Lib): void {
 
     p5.setup = (): void => {
         P5Context.initialize(p5);
-        CanvasContext.buildCanvas(ASPECT_RATIOS.INITIAL, 720, p5.WEBGL, true);
+        CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
         Circle.minDiameter = 50;
         Circle.maxDiameter = 250;
         circle = new Circle();
@@ -84,12 +84,14 @@ function sketch(p5: P5Lib): void {
             );
         } else if (p5.key === '5') {
             CanvasContext.updateAspectRatio(ASPECT_RATIOS.INITIAL);
-        } else if (p5.key === '0') {
-            CanvasContext.updateResolution(720);
-        } else if (p5.key === '9') {
-            CanvasContext.updateResolution(1080);
+        } else if (p5.key === '6') {
+            CanvasContext.updateAspectRatio(ASPECT_RATIOS.MATCH);
         } else if (p5.key === '8') {
             CanvasContext.updateResolution(2048);
+        } else if (p5.key === '9') {
+            CanvasContext.updateResolution(1080);
+        } else if (p5.key === '0') {
+            CanvasContext.updateResolution(720);
         }
     };
 
