@@ -27,14 +27,17 @@ import {
 } from '@batpb/genart';
 
 import { AspectRatioTestScreen } from './aspect-ratio-test-screen';
+import { ResolutionTestScreen } from './resolution-test-screen';
 
 function sketch(p5: P5Lib): void {
     p5.setup = (): void => {
         P5Context.initialize(p5);
         CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
-        const screen: AspectRatioTestScreen = new AspectRatioTestScreen();
-        ScreenHandler.addScreen(screen);
-        ScreenHandler.currentScreen = screen.NAME;
+        const aspectScreen: AspectRatioTestScreen = new AspectRatioTestScreen();
+        const resolutionScreen: ResolutionTestScreen = new ResolutionTestScreen();
+        ScreenHandler.addScreen(aspectScreen);
+        ScreenHandler.addScreen(resolutionScreen);
+        ScreenHandler.currentScreen = aspectScreen.NAME;
     };
 
     p5.draw = (): void => {

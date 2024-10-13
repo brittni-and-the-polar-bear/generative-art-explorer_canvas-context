@@ -25,24 +25,29 @@ import {
     Color,
     CoordinateMapper,
     P5Context,
-    PC_7A00F5
+    PC_7A00F5, ScreenHandler
 } from '@batpb/genart';
 
-export class AspectRatioTestScreen extends CanvasScreen {
-    private circle: Circle;
+import { ScreenNames } from './screen-names';
 
-    public constructor() {
-        super('AspectRatioTest');
+export class AspectRatioTestScreen extends CanvasScreen {
+    protected circle: Circle;
+    protected lineColor: Color;
+
+    public constructor(name?: string) {
+        if (name) {
+            super(name);
+        } else {
+            super(ScreenNames.ASPECT_RATIO_TEST);
+        }
+
         Circle.minDiameter = 50;
         Circle.maxDiameter = 250;
         this.circle = new Circle(this);
+        this.lineColor = new Color(PC_7A00F5);
     }
 
-    public setup(): void {
-
-    }
-
-    public draw(): void {
+    public override draw(): void {
         const p5: P5Lib = P5Context.p5;
         p5.background(0);
         p5.rectMode(p5.CENTER);
@@ -56,7 +61,7 @@ export class AspectRatioTestScreen extends CanvasScreen {
         p5.fill(colorB.color);
         p5.rect(CoordinateMapper.centerX, CoordinateMapper.centerY, 75, 75);
 
-        p5.stroke((new Color(PC_7A00F5)).color);
+        p5.stroke(this.lineColor.color);
         p5.strokeWeight(CanvasContext.defaultStroke);
         p5.line(
             CoordinateMapper.mapRatioToCanvasX(0.1),
@@ -74,7 +79,7 @@ export class AspectRatioTestScreen extends CanvasScreen {
         this.circle.draw();
     }
 
-    public keyPressed(): void {
+    public override keyPressed(): void {
         const p5: P5Lib = P5Context.p5;
 
         if (p5.key === '1') {
@@ -91,9 +96,11 @@ export class AspectRatioTestScreen extends CanvasScreen {
             CanvasContext.updateAspectRatio(ASPECT_RATIOS.INITIAL);
         } else if (p5.key === '6') {
             CanvasContext.updateAspectRatio(ASPECT_RATIOS.MATCH);
+        } else if (p5.key === '0') {
+            ScreenHandler.currentScreen = ScreenNames.RESOLUTION_TEST;
         }
     }
 
-    public mousePressed(): void {
+    public override mousePressed(): void {
     }
 }
