@@ -17,86 +17,37 @@
 
 import P5Lib from 'p5';
 
-import {
-    ASPECT_RATIOS,
-    AspectRatioHandler,
-    CanvasContext, Circle,
-    Color,
-    CoordinateMapper,
-    PC_7A00F5,
-    P5Context
-} from '@batpb/genart';
-
 import '../assets/styles/sketch.css';
 
-function sketch(p5: P5Lib): void {
-    let circle: Circle;
+import {
+    ASPECT_RATIOS,
+    CanvasContext,
+    P5Context,
+    ScreenHandler
+} from '@batpb/genart';
 
+import { AspectRatioTestScreen } from './aspect-ratio-test-screen';
+
+function sketch(p5: P5Lib): void {
     p5.setup = (): void => {
         P5Context.initialize(p5);
         CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
-        Circle.minDiameter = 50;
-        Circle.maxDiameter = 250;
-        circle = new Circle();
+        const screen: AspectRatioTestScreen = new AspectRatioTestScreen();
+        ScreenHandler.addScreen(screen);
+        ScreenHandler.currentScreen = screen.NAME;
     };
 
     p5.draw = (): void => {
-        p5.background(0);
-        p5.rectMode(p5.CENTER);
-
-        const colorA: Color = new Color(p5.color(255, 0, 255));
-        p5.fill(colorA.color);
-        p5.noStroke();
-        p5.rect(CoordinateMapper.centerX, CoordinateMapper.centerY, 250, 250);
-
-        const colorB: Color = new Color(p5.color(0, 0, 255));
-        p5.fill(colorB.color);
-        p5.rect(CoordinateMapper.centerX, CoordinateMapper.centerY, 75, 75);
-
-        p5.stroke((new Color(PC_7A00F5)).color);
-        p5.strokeWeight(CanvasContext.defaultStroke);
-        p5.line(
-            CoordinateMapper.mapRatioToCanvasX(0.1),
-            CoordinateMapper.minY,
-            CoordinateMapper.mapRatioToCanvasX(0.1),
-            CoordinateMapper.maxY
-        );
-        p5.line(
-            CoordinateMapper.mapRatioToCanvasX(0.9),
-            CoordinateMapper.minY,
-            CoordinateMapper.mapRatioToCanvasX(0.9),
-            CoordinateMapper.maxY
-        );
-
-        circle.draw();
+        ScreenHandler.draw();
     };
 
     p5.keyPressed = (): void => {
-        if (p5.key === '1') {
-            CanvasContext.updateAspectRatio(ASPECT_RATIOS.SQUARE);
-        } else if (p5.key === '2') {
-            CanvasContext.updateAspectRatio(ASPECT_RATIOS.TIKTOK_PHOTO);
-        } else if (p5.key === '3') {
-            CanvasContext.updateAspectRatio(ASPECT_RATIOS.SOCIAL_VIDEO);
-        } else if (p5.key === '4') {
-            CanvasContext.updateAspectRatio(
-                AspectRatioHandler.buildAspectRatio(7, 5) ?? ASPECT_RATIOS.SQUARE
-            );
-        } else if (p5.key === '5') {
-            CanvasContext.updateAspectRatio(ASPECT_RATIOS.INITIAL);
-        } else if (p5.key === '6') {
-            CanvasContext.updateAspectRatio(ASPECT_RATIOS.MATCH);
-        } else if (p5.key === '8') {
-            CanvasContext.updateResolution(2048);
-        } else if (p5.key === '9') {
-            CanvasContext.updateResolution(1080);
-        } else if (p5.key === '0') {
-            CanvasContext.updateResolution(720);
-        }
+        ScreenHandler.keyPressed();
     };
 
     p5.mousePressed = (): void => {
         console.log(`mouseX = ${p5.mouseX}; mouseY = ${p5.mouseY}`);
+        ScreenHandler.mousePressed();
     };
 
     p5.windowResized = (): void => {
