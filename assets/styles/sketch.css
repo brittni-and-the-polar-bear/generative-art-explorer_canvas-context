@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2023-2024 brittni and the polar bear LLC.
  *
- * This file is a part of brittni and the polar bear's canvas context explorer project,
+ * This file is a part of brittni and the polar bear's sketch context explorer project,
  * which is released under the GNU Affero General Public License, Version 3.0.
  * You may not use this file except in compliance with the license.
  *
