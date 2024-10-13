@@ -24,7 +24,7 @@ import {
     Color,
     CoordinateMapper,
     PC_7A00F5,
-    SketchContext
+    P5Context
 } from '@batpb/genart';
 
 import '../assets/styles/sketch.css';
@@ -33,8 +33,8 @@ function sketch(p5: P5Lib): void {
     let circle: Circle;
 
     p5.setup = (): void => {
-        SketchContext.initialize(p5);
-        CanvasContext.buildCanvas(ASPECT_RATIOS.SQUARE, 720, p5.WEBGL, true);
+        P5Context.initialize(p5);
+        CanvasContext.buildCanvas(ASPECT_RATIOS.INITIAL, 720, p5.WEBGL, true);
         Circle.minDiameter = 50;
         Circle.maxDiameter = 250;
         circle = new Circle();
@@ -82,6 +82,8 @@ function sketch(p5: P5Lib): void {
             CanvasContext.updateAspectRatio(
                 AspectRatioHandler.buildAspectRatio(7, 5) ?? ASPECT_RATIOS.SQUARE
             );
+        } else if (p5.key === '5') {
+            CanvasContext.updateAspectRatio(ASPECT_RATIOS.INITIAL);
         } else if (p5.key === '0') {
             CanvasContext.updateResolution(720);
         } else if (p5.key === '9') {
